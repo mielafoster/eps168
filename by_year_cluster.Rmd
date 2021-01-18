@@ -1,0 +1,841 @@
+---
+title: "By Year Clustering"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#load the data
+pixels = read.csv("data/pixels.csv")
+View(pixels)
+pixels <- subset(pixels, select = (-X))
+View(pixels)
+
+#transform the data into a data matrix
+pixel_mat = t(data.frame(pixels))
+View(pixel_mat)
+row.names(pixel_mat ) <- seq(1, 254)
+View(pixel_mat)
+
+```
+
+```{r}
+#now subset by each year
+pixel_mat_2008 = t(pixel_mat[1,])
+pixel_mat_2009 = (pixel_mat[2:24,])
+pixel_mat_2010 = (pixel_mat[25:47,])
+pixel_mat_2011 = (pixel_mat[48:70,])
+pixel_mat_2012 = (pixel_mat[71:93,])
+pixel_mat_2013 = (pixel_mat[94:116,])
+pixel_mat_2014 = (pixel_mat[117:139,])
+pixel_mat_2015 = (pixel_mat[140:162,])
+pixel_mat_2016 = (pixel_mat[163:185,])
+pixel_mat_2017 = (pixel_mat[186:208,])
+pixel_mat_2018 = (pixel_mat[209:231,])
+pixel_mat_2019 = (pixel_mat[232:254,])
+
+```
+
+```{r, cahce = TRUE}
+#now cluster for each year
+#20 clusters
+library(dtwclust)
+t_pixel_mat_2008 = t(pixel_mat_2008)
+
+t_pixel_mat_2009 = t(pixel_mat_2009)
+write.csv(t_pixel_mat_2009,"t_pixel_mat_2009.csv", row.names = FALSE)
+
+t_pixel_mat_2010 = t(pixel_mat_2010)
+write.csv(t_pixel_mat_2010,"t_pixel_mat_2010.csv", row.names = FALSE)
+
+t_pixel_mat_2011 = t(pixel_mat_2011)
+write.csv(t_pixel_mat_2011,"t_pixel_mat_2011.csv", row.names = FALSE)
+
+t_pixel_mat_2012 = t(pixel_mat_2012)
+write.csv(t_pixel_mat_2012,"t_pixel_mat_2012.csv", row.names = FALSE)
+
+t_pixel_mat_2013 = t(pixel_mat_2013)
+write.csv(t_pixel_mat_2013,"t_pixel_mat_2013.csv", row.names = FALSE)
+
+t_pixel_mat_2014 = t(pixel_mat_2014)
+View(t_pixel_mat_2014)
+write.csv(t_pixel_mat_2014,"t_pixel_mat_2014.csv", row.names = FALSE)
+
+t_pixel_mat_2015 = t(pixel_mat_2015)
+write.csv(t_pixel_mat_2015,"t_pixel_mat_2015.csv", row.names = FALSE)
+
+t_pixel_mat_2016 = t(pixel_mat_2016)
+write.csv(t_pixel_mat_2016,"t_pixel_mat_2016.csv", row.names = FALSE)
+
+t_pixel_mat_2017 = t(pixel_mat_2017)
+write.csv(t_pixel_mat_2017,"t_pixel_mat_2017.csv", row.names = FALSE)
+
+t_pixel_mat_2018 = t(pixel_mat_2018)
+write.csv(t_pixel_mat_2018,"t_pixel_mat_2018.csv", row.names = FALSE)
+
+t_pixel_mat_2019 = t(pixel_mat_2019)
+write.csv(t_pixel_mat_2019,"t_pixel_mat_2019.csv", row.names = FALSE)
+
+
+
+#twenty_2008<- tsclust(t_pixel_mat_2008, type = "partitional", k = 20L, 
+              #distance = "dtw_basic", centroid = "pam", 
+              #seed = 3247, trace = TRUE,
+             # args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+#plot(twenty_2008)
+#twenty_2008_group = (t(cbind(t_pixel_mat_2008[,0], cluster = twenty_2008@cluster)))
+#write.csv(twenty_2008_group,"twenty_2008_group.csv", row.names = FALSE)
+#cvi(twenty_2008, b = seq(1,1), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+twenty_2009<- tsclust(t_pixel_mat_2009, type = "partitional", k = 20L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(twenty_2009)
+twenty_2009_group = (t(cbind(t_pixel_mat_2009[,0], cluster = twenty_2009@cluster)))
+write.csv(twenty_2009_group,"twenty_2009_group.csv", row.names = FALSE)
+cvi(twenty_2009, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+
+twenty_2010<- tsclust(t_pixel_mat_2010, type = "partitional", k = 20L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(twenty_2010)
+twenty_2010_group = (t(cbind(t_pixel_mat_2010[,0], cluster = twenty_2010@cluster)))
+write.csv(twenty_2010_group,"twenty_2010_group.csv", row.names = FALSE)
+cvi(twenty_2010, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+
+twenty_2011<- tsclust(t_pixel_mat_2011, type = "partitional", k = 20L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(twenty_2011)
+twenty_2011_group = (t(cbind(t_pixel_mat_2011[,0], cluster = twenty_2011@cluster)))
+write.csv(twenty_2011_group,"twenty_2011_group.csv", row.names = FALSE)
+cvi(twenty_2011,  b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+twenty_2012<- tsclust(t_pixel_mat_2012, type = "partitional", k = 20L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(twenty_2012)
+twenty_2012_group = (t(cbind(t_pixel_mat_2012[,0], cluster = twenty_2012@cluster)))
+write.csv(twenty_2012_group,"twenty_2012_group.csv", row.names = FALSE)
+cvi(twenty_2012, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+twenty_2013<- tsclust(t_pixel_mat_2013, type = "partitional", k = 20L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(twenty_2013)
+twenty_2013_group = (t(cbind(t_pixel_mat_2013[,0], cluster = twenty_2013@cluster)))
+write.csv(twenty_2013_group,"twenty_2013_group.csv", row.names = FALSE)
+cvi(twenty_2013, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+twenty_2014<- tsclust(t_pixel_mat_2014, type = "partitional", k = 20L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(twenty_2014)
+twenty_2014_group = (t(cbind(t_pixel_mat_2014[,0], cluster = twenty_2014@cluster)))
+write.csv(twenty_2014_group,"twenty_2014_group.csv", row.names = FALSE)
+cvi(twenty_2014, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+twenty_2015<- tsclust(t_pixel_mat_2015, type = "partitional", k = 20L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(twenty_2015)
+twenty_2015_group = (t(cbind(t_pixel_mat_2015[,0], cluster = twenty_2015@cluster)))
+write.csv(twenty_2015_group,"twenty_2015_group.csv", row.names = FALSE)
+cvi(twenty_2015, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+twenty_2016<- tsclust(t_pixel_mat_2016, type = "partitional", k = 20L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(twenty_2016)
+twenty_2016_group = (t(cbind(t_pixel_mat_2016[,0], cluster = twenty_2016@cluster)))
+write.csv(twenty_2016_group,"twenty_2016_group.csv", row.names = FALSE)
+cvi(twenty_2016, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+twenty_2017<- tsclust(t_pixel_mat_2017, type = "partitional", k = 20L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(twenty_2017)
+twenty_2017_group = (t(cbind(t_pixel_mat_2017[,0], cluster = twenty_2017@cluster)))
+write.csv(twenty_2017_group,"twenty_2017_group.csv", row.names = FALSE)
+cvi(twenty_2017, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+twenty_2018<- tsclust(t_pixel_mat_2018, type = "partitional", k = 20L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(twenty_2018)
+twenty_2018_group = (t(cbind(t_pixel_mat_2018[,0], cluster = twenty_2018@cluster)))
+write.csv(twenty_2018_group,"twenty_2018_group.csv", row.names = FALSE)
+cvi(twenty_2018, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+twenty_2019<- tsclust(t_pixel_mat_2019, type = "partitional", k = 20L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(twenty_2019)
+twenty_2019_group = (t(cbind(t_pixel_mat_2019[,0], cluster = twenty_2019@cluster)))
+write.csv(twenty_2019_group,"twenty_2019_group.csv", row.names = FALSE)
+cvi(twenty_2019, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+```
+
+```{r}
+#now cluster for each year
+#10 clusters
+library(dtwclust)
+
+ten_2009<- tsclust(t_pixel_mat_2009, type = "partitional", k = 10L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(ten_2009)
+ten_2009_group = (t(cbind(t_pixel_mat_2009[,0], cluster = ten_2009@cluster)))
+write.csv(ten_2009_group,"ten_2009_group.csv", row.names = FALSE)
+cvi(ten_2009, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+ten_2010<- tsclust(t_pixel_mat_2010, type = "partitional", k = 10L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(ten_2010)
+ten_2010_group = (t(cbind(t_pixel_mat_2010[,0], cluster = ten_2010@cluster)))
+write.csv(ten_2010_group,"ten_2010_group.csv", row.names = FALSE)
+cvi(ten_2010, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+ten_2011<- tsclust(t_pixel_mat_2011, type = "partitional", k = 10L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(ten_2011)
+ten_2011_group = (t(cbind(t_pixel_mat_2011[,0], cluster = ten_2011@cluster)))
+write.csv(ten_2011_group,"ten_2011_group.csv", row.names = FALSE)
+cvi(ten_2011, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+ten_2012<- tsclust(t_pixel_mat_2012, type = "partitional", k = 10L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(ten_2012)
+ten_2012_group = (t(cbind(t_pixel_mat_2012[,0], cluster = ten_2012@cluster)))
+write.csv(ten_2012_group,"ten_2012_group.csv", row.names = FALSE)
+cvi(ten_2012, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+ten_2013<- tsclust(t_pixel_mat_2013, type = "partitional", k = 10L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(ten_2013)
+ten_2013_group = (t(cbind(t_pixel_mat_2013[,0], cluster = ten_2013@cluster)))
+write.csv(ten_2013_group,"ten_2013_group.csv", row.names = FALSE)
+cvi(ten_2013, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+ten_2014<- tsclust(t_pixel_mat_2014, type = "partitional", k = 10L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(ten_2014)
+ten_2014_group = (t(cbind(t_pixel_mat_2014[,0], cluster = ten_2014@cluster)))
+write.csv(ten_2014_group,"ten_2014_group.csv", row.names = FALSE)
+cvi(ten_2014, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+ten_2015<- tsclust(t_pixel_mat_2015, type = "partitional", k = 10L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(ten_2015)
+ten_2015_group = (t(cbind(t_pixel_mat_2015[,0], cluster = ten_2015@cluster)))
+write.csv(ten_2015_group,"ten_2015_group.csv", row.names = FALSE)
+cvi(ten_2015, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+ten_2016<- tsclust(t_pixel_mat_2016, type = "partitional", k = 10L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(ten_2016)
+ten_2016_group = (t(cbind(t_pixel_mat_2016[,0], cluster = ten_2016@cluster)))
+write.csv(ten_2016_group,"ten_2016_group.csv", row.names = FALSE)
+cvi(ten_2016, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+ten_2017<- tsclust(t_pixel_mat_2017, type = "partitional", k = 10L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(ten_2017)
+ten_2017_group = (t(cbind(t_pixel_mat_2017[,0], cluster = ten_2017@cluster)))
+write.csv(ten_2017_group,"ten_2017_group.csv", row.names = FALSE)
+cvi(ten_2017, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+ten_2018<- tsclust(t_pixel_mat_2018, type = "partitional", k = 10L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(ten_2018)
+ten_2018_group = (t(cbind(t_pixel_mat_2018[,0], cluster = ten_2018@cluster)))
+write.csv(ten_2018_group,"ten_2018_group.csv", row.names = FALSE)
+cvi(ten_2018, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+ten_2019<- tsclust(t_pixel_mat_2019, type = "partitional", k = 10L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(ten_2019)
+ten_2019_group = (t(cbind(t_pixel_mat_2019[,0], cluster = ten_2019@cluster)))
+write.csv(ten_2019_group,"ten_2019_group.csv", row.names = FALSE)
+cvi(ten_2019, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+```
+
+```{r}
+#now cluster for each year
+#5 clusters
+library(dtwclust)
+
+five_2009<- tsclust(t_pixel_mat_2009, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_2009)
+five_2009_group = (t(cbind(t_pixel_mat_2009[,0], cluster = five_2009@cluster)))
+write.csv(five_2009_group,"five_2009_group.csv", row.names = FALSE)
+cvi(five_2009, b = seq(1,522), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+five_2010<- tsclust(t_pixel_mat_2010, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_2010)
+five_2010_group = (t(cbind(t_pixel_mat_2010[,0], cluster = five_2010@cluster)))
+write.csv(five_2010_group,"five_2010_group.csv", row.names = FALSE)
+cvi(five_2010, b = seq(1,522), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+five_2011<- tsclust(t_pixel_mat_2011, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_2011)
+five_2011_group = (t(cbind(t_pixel_mat_2011[,0], cluster = five_2011@cluster)))
+write.csv(five_2011_group,"five_2011_group.csv", row.names = FALSE)
+cvi(five_2011, b = seq(1,522), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+five_2012<- tsclust(t_pixel_mat_2012, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_2012)
+five_2012_group = (t(cbind(t_pixel_mat_2012[,0], cluster = five_2012@cluster)))
+write.csv(five_2012_group,"five_2012_group.csv", row.names = FALSE)
+cvi(five_2012, b = seq(1,522), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+five_2013<- tsclust(t_pixel_mat_2013, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_2013)
+five_2013_group = (t(cbind(t_pixel_mat_2013[,0], cluster = five_2013@cluster)))
+write.csv(five_2013_group,"five_2013_group.csv", row.names = FALSE)
+cvi(five_2013, b = seq(1,522), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+five_2014<- tsclust(t_pixel_mat_2014, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_2014)
+five_2014_group = (t(cbind(t_pixel_mat_2014[,0], cluster = five_2014@cluster)))
+write.csv(five_2014_group,"five_2014_group.csv", row.names = FALSE)
+cvi(five_2014, b = seq(1,522), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+five_2015<- tsclust(t_pixel_mat_2015, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_2015)
+five_2015_group = (t(cbind(t_pixel_mat_2015[,0], cluster = five_2015@cluster)))
+write.csv(five_2015_group,"five_2015_group.csv", row.names = FALSE)
+cvi(five_2015, b = seq(1,522), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+five_2016<- tsclust(t_pixel_mat_2016, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_2016)
+five_2016_group = (t(cbind(t_pixel_mat_2016[,0], cluster = five_2016@cluster)))
+write.csv(five_2016_group,"five_2016_group.csv", row.names = FALSE)
+cvi(five_2016, b = seq(1,522), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+five_2017<- tsclust(t_pixel_mat_2017, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_2017)
+five_2017_group = (t(cbind(t_pixel_mat_2017[,0], cluster = five_2017@cluster)))
+write.csv(five_2017_group,"five_2017_group.csv", row.names = FALSE)
+cvi(five_2017, b = seq(1,522), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+five_2018<- tsclust(t_pixel_mat_2018, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_2018)
+five_2018_group = (t(cbind(t_pixel_mat_2018[,0], cluster = five_2018@cluster)))
+write.csv(five_2018_group,"five_2018_group.csv", row.names = FALSE)
+cvi(five_2018, b = seq(1,522), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+five_2019<- tsclust(t_pixel_mat_2019, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_2019)
+five_2019_group = (t(cbind(t_pixel_mat_2019[,0], cluster = five_2019@cluster)))
+write.csv(five_2019_group,"five_2019_group.csv", row.names = FALSE)
+cvi(five_2019, b = seq(1,522), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+```
+
+```{r}
+#now cluster for each year
+#3 clusters
+library(dtwclust)
+
+three_2009<- tsclust(t_pixel_mat_2009, type = "partitional", k = 3L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(three_2009)
+three_2009_group = (t(cbind(t_pixel_mat_2009[,0], cluster = three_2009@cluster)))
+write.csv(three_2009_group,"three_2009_group.csv", row.names = FALSE)
+cvi(three_2009, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+three_2010 <- tsclust(t_pixel_mat_2010, type = "partitional", k = 3L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(three_2010)
+three_2010_group = (t(cbind(t_pixel_mat_2010[,0], cluster = three_2010@cluster)))
+write.csv(three_2010_group,"three_2010_group.csv", row.names = FALSE)
+cvi(three_2010, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+three_2011<- tsclust(t_pixel_mat_2011, type = "partitional", k = 3L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(three_2011)
+three_2011_group = (t(cbind(t_pixel_mat_2011[,0], cluster = three_2011@cluster)))
+write.csv(three_2011_group,"three_2011_group.csv", row.names = FALSE)
+cvi(three_2011, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+three_2012<- tsclust(t_pixel_mat_2012, type = "partitional", k = 3L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(three_2012)
+three_2012_group = (t(cbind(t_pixel_mat_2012[,0], cluster = three_2012@cluster)))
+write.csv(three_2012_group,"three_2012_group.csv", row.names = FALSE)
+cvi(three_2012, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+three_2013<- tsclust(t_pixel_mat_2013, type = "partitional", k = 3L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(three_2013)
+three_2013_group = (t(cbind(t_pixel_mat_2013[,0], cluster = three_2013@cluster)))
+write.csv(three_2013_group,"three_2013_group.csv", row.names = FALSE)
+cvi(three_2013, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+three_2014<- tsclust(t_pixel_mat_2014, type = "partitional", k = 3L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(three_2014)
+three_2014_group = (t(cbind(t_pixel_mat_2014[,0], cluster = three_2014@cluster)))
+write.csv(three_2014_group,"three_2014_group.csv", row.names = FALSE)
+cvi(three_2014, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+three_2015<- tsclust(t_pixel_mat_2015, type = "partitional", k = 3L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(three_2015)
+three_2015_group = (t(cbind(t_pixel_mat_2015[,0], cluster = three_2015@cluster)))
+write.csv(three_2015_group,"three_2015_group.csv", row.names = FALSE)
+cvi(three_2015, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+three_2016<- tsclust(t_pixel_mat_2016, type = "partitional", k = 3L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(three_2016)
+three_2016_group = (t(cbind(t_pixel_mat_2016[,0], cluster = three_2016@cluster)))
+write.csv(three_2016_group,"three_2016_group.csv", row.names = FALSE)
+cvi(three_2016, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+three_2017<- tsclust(t_pixel_mat_2017, type = "partitional", k = 3L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(three_2017)
+three_2017_group = (t(cbind(t_pixel_mat_2017[,0], cluster = three_2017@cluster)))
+write.csv(three_2017_group,"three_2017_group.csv", row.names = FALSE)
+cvi(three_2017, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+
+three_2018<- tsclust(t_pixel_mat_2018, type = "partitional", k = 3L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(three_2018)
+three_2018_group = (t(cbind(t_pixel_mat_2018[,0], cluster = three_2018@cluster)))
+write.csv(three_2018_group,"three_2018_group.csv", row.names = FALSE)
+cvi(three_2018, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+
+three_2019<- tsclust(t_pixel_mat_2019, type = "partitional", k = 3L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(three_2019)
+three_2019_group = (t(cbind(t_pixel_mat_2019[,0], cluster = three_2019@cluster)))
+write.csv(three_2019_group,"three_2019_group.csv", row.names = FALSE)
+cvi(three_2019, b = seq(1,523), type = c("ARI", "VI", "RI", "Sil", "D", "SF" ))
+
+```
+```{r}
+#load all the data
+groups_2009 = read.csv("five_2009_group.csv")
+groups_2010 = read.csv("five_2010_group.csv")
+groups_2011 = read.csv("five_2011_group.csv")
+groups_2012 = read.csv("five_2012_group.csv")
+groups_2013 = read.csv("five_2013_group.csv")
+groups_2014 = read.csv("five_2014_group.csv")
+groups_2015 = read.csv("five_2015_group.csv")
+groups_2016 = read.csv("five_2016_group.csv")
+groups_2017 = read.csv("five_2017_group.csv")
+groups_2018 = read.csv("five_2018_group.csv")
+groups_2019 = read.csv("five_2019_group.csv")
+all_axis = read.csv("all_axis.csv")
+
+require(ggmap)
+library(ggmap)
+
+all_axis_2009 = cbind(all_axis, t(groups_2009))
+all_axis_2010 = cbind(all_axis, t(groups_2010))
+all_axis_2011 = cbind(all_axis, t(groups_2011))
+all_axis_2012 = cbind(all_axis, t(groups_2012))
+all_axis_2013 = cbind(all_axis, t(groups_2013))
+all_axis_2014 = cbind(all_axis, t(groups_2014))
+all_axis_2015 = cbind(all_axis, t(groups_2015))
+all_axis_2016 = cbind(all_axis, t(groups_2016))
+all_axis_2017 = cbind(all_axis, t(groups_2017))
+all_axis_2018 = cbind(all_axis, t(groups_2018))
+all_axis_2019 = cbind(all_axis, t(groups_2019))
+
+all_axis_2009$groups <- all_axis_2009[,3]
+all_axis_2010$groups <- all_axis_2010[,3]
+all_axis_2011$groups <- all_axis_2011[,3]
+all_axis_2012$groups <- all_axis_2012[,3]
+all_axis_2013$groups <- all_axis_2013[,3]
+all_axis_2014$groups <- all_axis_2014[,3]
+all_axis_2015$groups <- all_axis_2015[,3]
+all_axis_2016$groups <- all_axis_2016[,3]
+all_axis_2017$groups <- all_axis_2017[,3]
+all_axis_2018$groups <- all_axis_2018[,3]
+all_axis_2019$groups <- all_axis_2019[,3]
+
+max(all_axis_2019$Lat)
+```
+
+
+```{r}
+
+library(ggplot2)
+data(all_axis_2009)
+
+plot_2009 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis_2009,
+  main = "5 Clusters 2009",
+  color = groups,
+  size=I(5)
+)
+plot_2009+scale_color_gradientn(colours = rainbow(5))
+
+
+library(ggplot2)
+data(all_axis_2010)
+
+plot_2010 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis_2010,
+  main = "5 Clusters 2010",
+  color = groups,
+  size=I(5)
+)
+plot_2010+scale_color_gradientn(colours = rainbow(5))
+
+library(ggplot2)
+data(all_axis_2011)
+
+plot_2011 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis_2011,
+  main = "5 Clusters 2011",
+  color = groups,
+  size=I(5)
+)
+plot_2011+scale_color_gradientn(colours = rainbow(5))
+
+
+library(ggplot2)
+data(all_axis_2012)
+
+plot_2012 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis_2012,
+  main = "5 Clusters 2012",
+  color = groups,
+  size=I(5)
+)
+plot_2012+scale_color_gradientn(colours = rainbow(5))
+
+library(ggplot2)
+data(all_axis_2013)
+
+plot_2013 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis_2013,
+  main = "5 Clusters 2013",
+  color = groups,
+  size=I(5)
+)
+plot_2013+scale_color_gradientn(colours = rainbow(5))
+
+library(ggplot2)
+data(all_axis_2014)
+
+plot_2014 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis_2014,
+  main = "5 Clusters 2014",
+  color = groups,
+  size=I(5)
+)
+plot_2014+scale_color_gradientn(colours = rainbow(5))
+
+library(ggplot2)
+data(all_axis_2015)
+
+plot_2015 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis_2015,
+  main = "5 Clusters 2015",
+  color = groups,
+  size=I(5)
+)
+plot_2015+scale_color_gradientn(colours = rainbow(5))
+
+library(ggplot2)
+data(all_axis_2016)
+
+plot_2016 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis_2016,
+  main = "5 Clusters 2016",
+  color = groups,
+  size=I(5)
+)
+plot_2016+scale_color_gradientn(colours = rainbow(5))
+
+library(ggplot2)
+data(all_axis_2017)
+
+plot_2017 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis_2017,
+  main = "5 Clusters 2017",
+  color = groups,
+  size=I(5)
+)
+plot_2017+scale_color_gradientn(colours = rainbow(5))
+
+library(ggplot2)
+data(all_axis_2018)
+
+plot_2018 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis_2018,
+  main = "5 Clusters 2018",
+  color = groups,
+  size=I(5)
+)
+plot_2018+scale_color_gradientn(colours = rainbow(5))
+
+
+library(ggplot2)
+data(all_axis_2019)
+
+plot_2019 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis_2019,
+  main = "5 Clusters 2019",
+  color = groups,
+  size=I(5)
+)
+plot_2019+scale_color_gradientn(colours = rainbow(5))
+```
+
+
+
+

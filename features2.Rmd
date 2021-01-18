@@ -1,0 +1,143 @@
+---
+title: "features_case2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#second case
+
+#import groupss
+group_3rd = read.csv("three_cluster_groups_la.csv")
+View(group_3rd)
+group5_3rd = read.csv("five_cluster_groups_la.csv")
+View(group5_3rd)
+
+#import original NDVI values
+third_case = read.csv("Book2.csv",header = FALSE)
+third_case = third_case[-1,]
+third_case$group3 = t(group_3rd)
+third_case$group5 = t(group5_3rd)
+
+#3 clusters groups
+three_clusters_1 = third_case[third_case$group3 == 1,]
+three_clusters_1 = three_clusters_1[,-(255:256)]
+
+three_clusters_2 = third_case[third_case$group3 == 2,]
+three_clusters_2 = three_clusters_2[,-(255:256)]
+
+three_clusters_3 = third_case[third_case$group3 == 3,]
+three_clusters_3 = three_clusters_3[,-(255:256)]
+
+
+#5 clusters groups
+five_clusters_1 = third_case[third_case$group5 == 1,]
+five_clusters_1 = five_clusters_1[,-(255:256)]
+
+
+five_clusters_2 = third_case[third_case$group5 == 2,]
+five_clusters_2 = five_clusters_2[,-(255:256)]
+
+
+five_clusters_3 = third_case[third_case$group5 == 3,]
+five_clusters_3 = five_clusters_3[,-(255:256)]
+
+
+five_clusters_4 = third_case[third_case$group5 == 4,]
+five_clusters_4 = five_clusters_4[,-(255:256)]
+
+
+five_clusters_5 = third_case[third_case$group5 == 5,]
+five_clusters_5 = five_clusters_5[,-(255:256)]
+
+```
+
+
+
+```{r}
+#pca on the variables per cluster
+require("MASS")
+require("CCA")
+require("tidyverse")
+require("stringr")
+require("broom")
+require("GGally")
+require("cowplot")
+
+#group 1
+svd_3cluster_1 = prcomp((three_clusters_1))
+pc1_top_var = (svd_3cluster_1$sdev)
+pc1 = (svd_3cluster_1$rotation)[,1]
+rank_pc1 = sort(pc1)
+
+#group 2
+svd_3cluster_2 = prcomp((three_clusters_2))
+pc1_top_var_2 = (svd_3cluster_2$sdev)
+pc1_2 = (svd_3cluster_2$rotation)[,1]
+rank_pc1_2 = sort(pc1_2)
+
+#group 3
+svd_3cluster_3 = prcomp((three_clusters_3))
+pc1_top_var_3 = (svd_3cluster_3$sdev)
+pc1_3 = (svd_3cluster_3$rotation)[,1]
+rank_pc1_3 = sort(pc1_3)
+
+print(tail(rank_pc1,10))
+write.csv(rank_pc1,"threeclusters_secondcase_1stgroup.csv", row.names = FALSE)
+
+print(tail(rank_pc1_2,10))
+write.csv(rank_pc1_2,"threeclusters_secondcase_2ndgroup.csv", row.names = FALSE)
+
+print(tail(rank_pc1_3,10))
+write.csv(rank_pc1_3,"threeclusters_secondcase_3rdgroup.csv", row.names = FALSE)
+
+
+#group 1
+svd_5cluster_1 = prcomp((five_clusters_1))
+pc1_top_var = (svd_5cluster_1$sdev)
+pc1 = (svd_5cluster_1$rotation)[,1]
+rank_pc1_5 = sort(pc1)
+
+#group 2
+svd_5cluster_2 = prcomp((five_clusters_2))
+pc1_top_var_2 = (svd_5cluster_2$sdev)
+pc1_2 = (svd_5cluster_2$rotation)[,1]
+rank_pc1_2_5 = sort(pc1_2)
+
+#group 3
+svd_5cluster_3 = prcomp((five_clusters_3))
+pc1_top_var_3 = (svd_5cluster_3$sdev)
+pc1_3 = (svd_5cluster_3$rotation)[,1]
+rank_pc1_3_5 = sort(pc1_3)
+
+#group 4
+svd_5cluster_4 = prcomp((five_clusters_4))
+pc1_top_var_4 = (svd_5cluster_4$sdev)
+pc1_4 = (svd_5cluster_4$rotation)[,1]
+rank_pc1_4_5 = sort(pc1_4)
+
+#group 5
+svd_5cluster_5 = prcomp((five_clusters_5))
+pc1_top_var_5 = (svd_5cluster_3$sdev)
+pc1_5 = (svd_5cluster_5$rotation)[,1]
+rank_pc1_5_5 = sort(pc1_5)
+
+print(tail(rank_pc1_5,10))
+write.csv(rank_pc1_5,"fiveclusters_secondcase_1stgroup.csv", row.names = FALSE)
+
+print(tail(rank_pc1_2_5,10))
+write.csv(rank_pc1_2_5,"fiveclusters_secondcase_2ndgroup.csv", row.names = FALSE)
+
+print(tail(rank_pc1_3_5,10))
+write.csv(rank_pc1_3_5,"fiveclusters_secondcase_3rdgroup.csv", row.names = FALSE)
+
+print(tail(rank_pc1_4_5,10))
+write.csv(rank_pc1_4_5,"fiveclusters_secondcase_4thgroup.csv", row.names = FALSE)
+
+print(tail(rank_pc1_5_5,10))
+write.csv(rank_pc1_5_5,"fiveclusters_secondcase_5thgroup.csv", row.names = FALSE)
+
+```

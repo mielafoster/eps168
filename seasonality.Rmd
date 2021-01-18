@@ -1,0 +1,557 @@
+---
+title: "seasonality_168"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#load all data
+pixels_2009 = read.csv("t_pixel_mat_2009.csv")
+pixels_2010 = read.csv("t_pixel_mat_2010.csv")
+pixels_2011 = read.csv("t_pixel_mat_2011.csv")
+pixels_2012 = read.csv("t_pixel_mat_2012.csv")
+pixels_2013 = read.csv("t_pixel_mat_2013.csv")
+pixels_2014 = read.csv("t_pixel_mat_2014.csv")
+pixels_2015 = read.csv("t_pixel_mat_2015.csv")
+pixels_2016 = read.csv("t_pixel_mat_2016.csv")
+pixels_2017 = read.csv("t_pixel_mat_2017.csv")
+pixels_2018 = read.csv("t_pixel_mat_2018.csv")
+pixels_2019 = read.csv("t_pixel_mat_2019.csv")
+
+```
+
+```{r}
+#2009 months
+jan_2009 = pixels_2009[,1:2]
+feb_2009= pixels_2009[,3:4]
+march_2009= pixels_2009[,5:6]
+april_2009= pixels_2009[,7:8]
+may_2009= pixels_2009[,9:10]
+june_2009= pixels_2009[,11:12]
+july_2009= pixels_2009[,13:14]
+august_2009= pixels_2009[,15:16]
+sep_2009= pixels_2009[,17:18]
+oct_2009= pixels_2009[,19:20]
+winter_2009 = pixels_2009[,21:23]
+
+land_prep_2009 = pixels_2009[,5:8]
+growing_2009 = pixels_2009[,9:14]
+harvesting_2009 = pixels_2009[,15:18]
+
+
+library(dtwclust)
+
+five_land_prep_2009<- tsclust(land_prep_2009, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_land_prep_2009)
+five_land_prep_2009_group = (t(cbind(land_prep_2009[,0], cluster = five_land_prep_2009@cluster)))
+write.csv(five_land_prep_2009_group,"five_land_prep_2009_group.csv", row.names = FALSE)
+
+
+five_grow_2009<- tsclust(growing_2009, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_grow_2009)
+five_grow_2009_group = (t(cbind(growing_2009[,0], cluster = five_grow_2009@cluster)))
+write.csv(five_grow_2009_group,"five_grow_2009_group.csv", row.names = FALSE)
+
+
+
+five_harvest_2009<- tsclust(harvest_2009, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_harvest_2009)
+five_harvest_2009_group = (t(cbind(harvest_2009[,0], cluster = five_harvest_2009@cluster)))
+write.csv(five_harvest_2009_group,"five_harvest_2009_group.csv", row.names = FALSE)
+
+
+#plot in the correct season
+five_land_prep_2009_group = t(read.csv("five_land_prep_2009_group.csv"))
+five_grow_2009_group = t(read.csv("five_grow_2009_group.csv"))
+five_harvest_2009_group = t(read.csv("five_harvest_2009_group.csv"))
+all_axis = read.csv("all_axis.csv")
+
+#make new columns
+all_axis$land = five_land_prep_2009_group
+all_axis$grow = five_grow_2009_group
+all_axis$harvest = five_harvest_2009_group
+
+View(all_axis)
+
+
+#Now plot these clusters
+library(ggplot2)
+data(all_axis)
+
+land_2009 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis,
+  main = "5 Clusters Land Preparation Season 2009",
+  color = land,
+  size=I(5)
+)
+land_2009+scale_color_gradientn(colours = rainbow(5))
+
+
+grow_2009 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis,
+  main = "5 Clusters Growing Season 2009",
+  color = grow,
+  size=I(5)
+)
+grow_2009+scale_color_gradientn(colours = rainbow(5))
+
+
+
+harvest_2009 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis,
+  main = "5 Clusters Harvest Season 2009",
+  color = harvest,
+  size=I(5)
+)
+harvest_2009+scale_color_gradientn(colours = rainbow(5))
+
+```
+
+
+```{r}
+#seasonality in 2015
+
+jan_2015 = pixels_2015[,1:2]
+feb_2015= pixels_2015[,3:4]
+march_2015= pixels_2015[,5:6]
+april_2015= pixels_2015[,7:8]
+may_2015= pixels_2015[,9:10]
+june_2015= pixels_2015[,11:12]
+july_2015= pixels_2015[,13:14]
+august_2015= pixels_2015[,15:16]
+sep_2015 = pixels_2015[,17:18]
+oct_2015 = pixels_2015[,19:20]
+winter_2015 = pixels_2015[,21:23]
+
+land_prep_2015 = pixels_2015[,5:8]
+growing_2015 = pixels_2015[,9:14]
+harvest_2015 = pixels_2015[,15:18]
+
+
+library(dtwclust)
+
+five_land_prep_2015<- tsclust(land_prep_2015, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_land_prep_2015)
+five_land_prep_2015_group = (t(cbind(land_prep_2015[,0], cluster = five_land_prep_2015@cluster)))
+write.csv(five_land_prep_2015_group,"five_land_prep_2015_group.csv", row.names = FALSE)
+
+
+five_grow_2015<- tsclust(growing_2015, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_grow_2015)
+five_grow_2015_group = (t(cbind(growing_2015[,0], cluster = five_grow_2015@cluster)))
+write.csv(five_grow_2015_group,"five_grow_2015_group.csv", row.names = FALSE)
+
+
+
+five_harvest_2015<- tsclust(harvest_2015, type = "partitional", k = 5L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(five_harvest_2015)
+five_harvest_2015_group = (t(cbind(harvest_2015[,0], cluster = five_harvest_2015@cluster)))
+write.csv(five_harvest_2015_group,"five_harvest_2015_group.csv", row.names = FALSE)
+
+
+#plot in the correct season
+five_land_prep_2015_group = t(read.csv("five_land_prep_2015_group.csv"))
+five_grow_2015_group = t(read.csv("five_grow_2015_group.csv"))
+five_harvest_2015_group = t(read.csv("five_harvest_2015_group.csv"))
+all_axis = read.csv("all_axis.csv")
+
+#make new columns
+all_axis$land = five_land_prep_2015_group
+all_axis$grow = five_grow_2015_group
+all_axis$harvest = five_harvest_2015_group
+
+View(all_axis)
+
+
+#Now plot these clusters
+library(ggplot2)
+data(all_axis)
+
+land_2015 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis,
+  main = "5 Clusters Land Preparation Season 2015",
+  color = land,
+  size=I(5)
+)
+land_2015+scale_color_gradientn(colours = rainbow(5))
+
+
+grow_2015 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis,
+  main = "5 Clusters Growing Season 2015",
+  color = grow,
+  size=I(5)
+)
+grow_2015+scale_color_gradientn(colours = rainbow(5))
+
+
+
+harvest_2015 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis,
+  main = "5 Clusters Harvest Season 2015",
+  color = harvest,
+  size=I(5)
+)
+harvest_2015+scale_color_gradientn(colours = rainbow(5))
+```
+
+```{r}
+#now for 3 clusters
+
+library(dtwclust)
+
+three_land_prep_2009<- tsclust(land_prep_2009, type = "partitional", k = 3L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(three_land_prep_2009)
+three_land_prep_2009_group = (t(cbind(land_prep_2009[,0], cluster = three_land_prep_2009@cluster)))
+write.csv(three_land_prep_2009_group,"three_land_prep_2009_group.csv", row.names = FALSE)
+
+
+three_grow_2009<- tsclust(growing_2009, type = "partitional", k = 3L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(three_grow_2009)
+three_grow_2009_group = (t(cbind(growing_2009[,0], cluster = three_grow_2009@cluster)))
+write.csv(three_grow_2009_group,"three_grow_2009_group.csv", row.names = FALSE)
+
+
+
+three_harvest_2009<- tsclust(harvesting_2009, type = "partitional", k = 3L, 
+              distance = "dtw_basic", centroid = "pam", 
+              seed = 3247, trace = TRUE,
+              args = tsclust_args(dist = list(window.size = 20L)))
+#plot and figure out what each cluster belongs to
+plot(three_harvest_2009)
+three_harvest_2009_group = (t(cbind(harvesting_2009[,0], cluster = three_harvest_2009@cluster)))
+write.csv(three_harvest_2009_group,"three_harvest_2009_group.csv", row.names = FALSE)
+
+
+#plot in the correct season
+three_land_prep_2009_group = t(read.csv("three_land_prep_2009_group.csv"))
+three_grow_2009_group = t(read.csv("three_grow_2009_group.csv"))
+three_harvest_2009_group = t(read.csv("three_harvest_2009_group.csv"))
+all_axis = read.csv("all_axis.csv")
+
+#make new columns
+all_axis$land = three_land_prep_2009_group
+all_axis$grow = three_grow_2009_group
+all_axis$harvest = three_harvest_2009_group
+
+View(all_axis)
+
+
+#Now plot these clusters
+library(ggplot2)
+data(all_axis)
+
+land_2009 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis,
+  main = "3 Clusters Land Preparation Season 2009",
+  color = land,
+  size=I(5)
+)
+land_2009+scale_color_gradientn(colours = rainbow(3))
+
+
+grow_2009 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis,
+  main = "3 Clusters Growing Season 2009",
+  color = grow,
+  size=I(5)
+)
+grow_2009+scale_color_gradientn(colours = rainbow(3))
+
+
+
+harvest_2009 <- qplot(
+  x = Long,
+  y = Lat,
+  xlim = c(32.45312,32.51146),
+  ylim = c(3.855208,3.890625),
+  data = all_axis,
+  main = "3 Clusters Harvest Season 2009",
+  color = harvest,
+  size=I(5)
+)
+harvest_2009+scale_color_gradientn(colours = rainbow(3))
+
+```
+
+
+
+```{r}
+#seasonality statistics 2009
+#first land prep season
+land_prep_2009$groups = five_land_prep_2009_group
+land_prep_2009$diff = land_prep_2009$X6 -  land_prep_2009$X9
+
+one.way <- aov(diff ~ groups, data = land_prep_2009)
+summary(one.way)
+
+wilcox_land <- pairwise.wilcox.test(land_prep_2009$diff, land_prep_2009$groups, p.adjust.method="none")
+wilcox_land$p.value
+
+#group1
+mean_1 = mean(land_prep_2009$groups== 1)
+sd_1 = sd(land_prep_2009$groups== 1)
+
+#group2
+mean_2 = mean(land_prep_2009$groups== 2)
+sd_2 = sd(land_prep_2009$groups== 2)
+
+#group3
+mean_3 = mean(land_prep_2009$groups== 3)
+sd_3 = sd(land_prep_2009$groups== 3)
+
+#group4
+mean_4 = mean(land_prep_2009$groups== 4)
+sd_4 = sd(land_prep_2009$groups== 4)
+
+#group5
+mean_5 = mean(land_prep_2009$groups== 5)
+sd_5 = sd(land_prep_2009$groups== 5)
+
+
+summary =matrix( c(mean_1, mean_2, mean_3, mean_4, mean_5, sd_1, sd_2, sd_3, sd_4, sd_5), ncol= 5, byrow= TRUE)
+
+colnames(summary) = c("Group1", "Group2", "Group3", "Group4", "Group5")
+rownames(summary) = c("Means", "StDev")
+
+
+summary
+
+#now growing season
+View(growing_2009)
+growing_2009$groups = five_grow_2009_group
+growing_2009$diff = abs(growing_2009$X10 -  growing_2009$X15)
+
+one.way_grow <- aov(diff ~ groups, data = growing_2009)
+summary(one.way_grow)
+
+wilcox_grow <- pairwise.wilcox.test(growing_2009$diff, growing_2009$groups, p.adjust.method="none")
+(wilcox_grow$p.value)
+
+#group1
+mean_1 = mean(growing_2009$groups== 1)
+sd_1 = sd(growing_2009$groups== 1)
+
+#group2
+mean_2 = mean(growing_2009$groups== 2)
+sd_2 = sd(growing_2009$groups== 2)
+
+#group3
+mean_3 = mean(growing_2009$groups== 3)
+sd_3 = sd(growing_2009$groups== 3)
+
+#group4
+mean_4 = mean(growing_2009$groups== 4)
+sd_4 = sd(growing_2009$groups== 4)
+
+#group5
+mean_5 = mean(growing_2009$groups== 5)
+sd_5 = sd(growing_2009$groups== 5)
+
+
+summary =matrix( c(mean_1, mean_2, mean_3, mean_4, mean_5, sd_1, sd_2, sd_3, sd_4, sd_5), ncol= 5, byrow= TRUE)
+
+colnames(summary) = c("Group1", "Group2", "Group3", "Group4", "Group5")
+rownames(summary) = c("Means", "StDev")
+
+summary
+
+#now harvest season
+harvesting_2009$groups = five_harvest_2009_group
+harvesting_2009$diff = abs(harvesting_2009$X16 -  harvesting_2009$X19)
+
+one.way_harvest <- aov(diff ~ groups, data = harvesting_2009)
+summary(one.way_harvest)
+
+wilcox_harvest <- pairwise.wilcox.test(harvesting_2009$diff, harvesting_2009$groups, p.adjust.method="none")
+wilcox_harvest$p.val
+
+#group1
+mean_1 = mean(harvesting_2009$groups== 1)
+sd_1 = sd(harvesting_2009$groups== 1)
+
+#group2
+mean_2 = mean(harvesting_2009$groups== 2)
+sd_2 = sd(harvesting_2009$groups== 2)
+
+#group3
+mean_3 = mean(harvesting_2009$groups== 3)
+sd_3 = sd(harvesting_2009$groups== 3)
+
+#group4
+mean_4 = mean(harvesting_2009$groups== 4)
+sd_4 = sd(harvesting_2009$groups== 4)
+
+#group5
+mean_5 = mean(harvesting_2009$groups== 5)
+sd_5 = sd(harvesting_2009$groups== 5)
+
+
+summary =matrix( c(mean_1, mean_2, mean_3, mean_4, mean_5, sd_1, sd_2, sd_3, sd_4, sd_5), ncol= 5, byrow= TRUE)
+
+colnames(summary) = c("Group1", "Group2", "Group3", "Group4", "Group5")
+rownames(summary) = c("Means", "StDev")
+
+summary
+```
+
+
+```{r}
+#first land prep season
+land_prep_2009$groups = three_land_prep_2009_group
+land_prep_2009$diff = land_prep_2009$X6 -  land_prep_2009$X9
+
+one.way <- aov(diff ~ groups, data = land_prep_2009)
+summary(one.way)
+
+wilcox_land <- pairwise.wilcox.test(land_prep_2009$diff, land_prep_2009$groups, p.adjust.method="none")
+wilcox_land$p.value
+
+#group1
+mean_1 = mean(land_prep_2009$groups== 1)
+sd_1 = sd(land_prep_2009$groups== 1)
+
+#group2
+mean_2 = mean(land_prep_2009$groups== 2)
+sd_2 = sd(land_prep_2009$groups== 2)
+
+#group3
+mean_3 = mean(land_prep_2009$groups== 3)
+sd_3 = sd(land_prep_2009$groups== 3)
+
+summary =matrix( c(mean_1, mean_2, mean_3, sd_1, sd_2, sd_3), ncol= 3, byrow= TRUE)
+
+colnames(summary) = c("Group1", "Group2", "Group3")
+rownames(summary) = c("Means", "StDev")
+
+summary
+
+#now growing season
+View(growing_2009)
+growing_2009$groups = three_grow_2009_group
+growing_2009$diff = abs(growing_2009$X10 -  growing_2009$X15)
+
+one.way_grow <- aov(diff ~ groups, data = growing_2009)
+summary(one.way_grow)
+
+wilcox_grow <- pairwise.wilcox.test(growing_2009$diff, growing_2009$groups, p.adjust.method="none")
+(wilcox_grow$p.value)
+
+#group1
+mean_1 = mean(growing_2009$groups== 1)
+sd_1 = sd(growing_2009$groups== 1)
+
+#group2
+mean_2 = mean(growing_2009$groups== 2)
+sd_2 = sd(growing_2009$groups== 2)
+
+#group3
+mean_3 = mean(growing_2009$groups== 3)
+sd_3 = sd(growing_2009$groups== 3)
+
+
+summary =matrix( c(mean_1, mean_2, mean_3, sd_1, sd_2, sd_3), ncol= 3, byrow= TRUE)
+
+colnames(summary) = c("Group1", "Group2", "Group3")
+rownames(summary) = c("Means", "StDev")
+
+summary
+
+#now harvest season
+dim(harvesting_2009)
+harvesting_2009$groups = three_harvest_2009_group
+harvesting_2009$diff = abs(harvesting_2009$X16 -  harvesting_2009$X19)
+
+one.way_harvest <- aov(diff ~ groups, data = harvesting_2009)
+summary(one.way_harvest)
+
+wilcox_harvest <- pairwise.wilcox.test(harvesting_2009$diff, harvesting_2009$groups, p.adjust.method="none")
+wilcox_harvest$p.val
+
+#group1
+mean_1 = mean(harvest_2009$groups== 1)
+sd_1 = sd(harvest_2009$groups== 1)
+
+#group2
+mean_2 = mean(harvest_2009$groups== 2)
+sd_2 = sd(harvest_2009$groups== 2)
+
+#group3
+mean_3 = mean(harvest_2009$groups== 3)
+sd_3 = sd(harvest_2009$groups== 3)
+
+summary =matrix( c(mean_1, mean_2, mean_3, sd_1, sd_2, sd_3), ncol= 3, byrow= TRUE)
+
+colnames(summary) = c("Group1", "Group2", "Group3")
+rownames(summary) = c("Means", "StDev")
+
+summary
+```
+
